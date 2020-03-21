@@ -1,4 +1,4 @@
-# Tuto_Python
+# Tuto Python
 
 Avant toute chose, tu dois installer Python sur ton environnement de travail. Il existe plusieurs versions de python, les verions < 2.7 sont obsoletes et la version 2.7 elle-même sera très prochainement dépréciée. Le mieux est de te mettre aux version python 3.*
 
@@ -43,7 +43,7 @@ Si tu as un doute sur le nom d'un package, je t'invite à aller là: https://pyp
 
 `pip freeze` #-- pour voir tous les packages installés et leurs versions 
 
-`pip install -r requirements.txt` #-- pour installer tous les packages mentionnés dans "requirements.txt", un fichier t.txt tout bête que tu peux éditer très simplement.
+`pip install -r requirements.txt` #-- pour installer tous les packages mentionnés dans "requirements.txt", un fichier .txt tout bête que tu peux éditer très simplement.
 
 
 ## Etape 6
