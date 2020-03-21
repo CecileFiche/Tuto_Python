@@ -37,7 +37,10 @@ suivre les instructions pour windows sur cette même page. https://packaging.pyt
 `pip install pandas`  #-- Pour installer le package "pandas" qui devrait te servir
 Si tu as un doute sur le nom d'un package, je t'invite à aller là: https://pypi.org/project/pandas/ par exemple pour connaître la commande, la version etc... d'un package (ici pandas)
 
-`pip install --upgrade pip`  #-- pour upgrader le package "pip" lui même \\
-`pip install pandas --upgrade`  #-- pour upgrader un autre package (ex pandas) \\
-`pip freeze` #-- pour voir tous les packages installés et leurs versions \\
-`pip install -r requirements.txt` #-- pour installer tous les packages mentionnés dans "requirements.txt", un fichier t.txt tout bête que tu peux éditer très simplement. \\
+`pip install --upgrade pip`  #-- pour upgrader le package "pip" lui même 
+
+`pip install pandas --upgrade`  #-- pour upgrader un autre package (ex pandas) 
+
+`pip freeze` #-- pour voir tous les packages installés et leurs versions 
+
+`pip install -r requirements.txt` #-- pour installer tous les packages mentionnés dans "requirements.txt", un fichier t.txt tout bête que tu peux éditer très simplement.
