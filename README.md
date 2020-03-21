@@ -44,3 +44,8 @@ Si tu as un doute sur le nom d'un package, je t'invite à aller là: https://pyp
 `pip freeze` #-- pour voir tous les packages installés et leurs versions 
 
 `pip install -r requirements.txt` #-- pour installer tous les packages mentionnés dans "requirements.txt", un fichier t.txt tout bête que tu peux éditer très simplement.
+
+
+## Etape 6
+**Installation de Jupyter !**
+cf: https://jupyter.org/install C'est trop cool ! En gros, ça te permet d'ouvrir un server "jupyter" en local
