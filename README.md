@@ -1,3 +1,4 @@
+python3
 # Tuto Python
 
 Avant toute chose, tu dois installer Python sur ton environnement de travail. Il existe plusieurs versions de python, les verions < 2.7 sont obsoletes et la version 2.7 elle-même sera très prochainement dépréciée. Le mieux est de te mettre aux version python 3.*
@@ -16,20 +17,31 @@ Donc, tu DOIS installer une librairie, «virtualenv» (pour virtual environment)
 **Installation de python 3** 
 Comme je ne sais pas sur quel environnement tu travailles mais que je suppose que c'est le seul sur lequel je n'ai jamais eu à faire d'installation de ce genre (Windows), je te laisse chercher sur internet les commandes adequates, sorry :)
 
+*J'ai Ubuntu. Alors j'ai vérifié et j'ai plusieurs versions de Python sur mon PC : Pytho2.7.15+ et Python 3.6.8*
+
 ## Etape 2 :
 **Installation de la librairie «pip»** qui est LA librairie de référence qui gère toute l'installation des packages Python : elle gère les dépendances, les versions etc...
 cf :  https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/
+
+*Done*
+*pip 20.0.2 from /home/fiche/.local/lib/python3.6/site-packages/pip (python 3.6)*
 
 ## Etape 3:
 **Installation du package «virtualenv»** qui va te permettre d'installer des packages, dans une version 
 suivre les instructions pour windows sur cette même page. https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/
 
+*Done. Par contre il propose plutôt d'installer venv pour les versions > python3.3 mais ça n'a pas marché sur mon PC. Donc j'ai installé virtualenv*
+
 ## Etape 4
 **Créer ton propre environnement virtuel** que tu peux appeller comme tu veux (généralement je précise le nom de la version python dedans pour de futures utilisations). Les commandes sont explicites, toujours sur cette même page.
+
+*Done. J'ai créé Python3_First_steps*
 
 ## Etape 5
 **Activer ton environnement virtuel**. A chaque fois que tu voudras travailler sur ton projet, c'est la première chose que tu devras faire (avant tout !)
 `.\env\Scripts\activate`  #-- si tu as nommé ton environnement virtuel "env", sous windows
+
+*Done... enfin. Putain j'ai galéré. En fait si ton schell est tcsh, il faut utiliser activate.csh*
 
 
 **`Exemple d'utilisation`**
@@ -45,7 +57,18 @@ Si tu as un doute sur le nom d'un package, je t'invite à aller là: https://pyp
 
 `pip install -r requirements.txt` #-- pour installer tous les packages mentionnés dans "requirements.txt", un fichier .txt tout bête que tu peux éditer très simplement.
 
+*Done. Freeze returned :*
+
+numpy==1.18.2
+pandas==1.0.3
+pkg-resources==0.0.0
+python-dateutil==2.8.1
+pytz==2019.3
+six==1.14.0
+
 
 ## Etape 6
 **Installation de Jupyter !**
 cf: https://jupyter.org/install C'est trop cool ! En gros, ça te permet d'ouvrir un server "jupyter" en local
+
+*Done mais quand je veux le lancer il me dit que la commande jupyter n'est pas reconnue ... Je regarderai ça demain*
