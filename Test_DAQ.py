@@ -25,14 +25,14 @@ number_of_devices = len(devices)
 if number_of_devices == 0:
     raise Exception('Error: No DAQ devices found')
 
-print('Found', number_of_devices, 'DAQ device(s):')
+print("Found {} DAQ device(s):".format(number_of_devices))
 
 # Connect to the DAQ 
 # ------------------
 
 daq_device = DaqDevice(devices[0])
 descriptor = daq_device.get_descriptor()
-print('\nConnecting to', descriptor.dev_string, '- please wait...')
+print("\nConnecting to {} - please wait...".format(descriptor))
 daq_device.connect()
 
 # Define the DioDevice object and return the number of Dio port on the DAQ
