@@ -49,7 +49,7 @@ if ao_device is None:
 
 ao_info = ao_device.get_info()
 Nports = ao_info.get_num_chans()
-Range = [ao_info.get_ranges()]
+Range = ao_info.get_ranges()
 print('\nNumber of ports available :', Nports)
 print('\nThe type of the port is :', Range)
 

@@ -14,8 +14,8 @@ import matplotlib.pyplot as plt
 
 class DAQ():
 
-	# Define default settings
-	# -----------------------
+	# Define default settings as a dictionnary
+	# ----------------------------------------
 
 	DEFAULTS = {'interfacing_method' : InterfaceType.USB}
 
