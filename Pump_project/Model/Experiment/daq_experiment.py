@@ -1,5 +1,6 @@
 from Pump_project.Model.DAQ.daq import Daq
 from time import sleep
+import yaml
 
 class DAQ_Experiment():
 
@@ -10,9 +11,17 @@ class DAQ_Experiment():
 		# print('init of class DAQ_Experiment')
 		self.DAQ_id = DAQ_id
 		self.driver = Daq(DAQ_id)
-		self.driver.idn()
 		self.driver.initialize()
+		self.driver.idn()
+        
+    # Define a method to load and read the config file
+    # ------------------------------------------------
 
+	def load_config(self, filename):
+		with open(filename, 'r') as f:
+			data = yaml.load(f, Loader=yaml.FullLoader)
+		return data
+        
 	# Define a method for a defined injection
 	# ---------------------------------------
 

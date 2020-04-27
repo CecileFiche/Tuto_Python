@@ -1,7 +1,4 @@
-Experiment:
-  name: This is a test Experiment
-  range: [1, 10, 0.1]
-  list:
-   - first Element
-   - second Element
-  voltage: 1.3
+DAQ:
+  interfacing_method : InterfaceType.USB
+  ao_pump : 2
+  do_trigger : 0

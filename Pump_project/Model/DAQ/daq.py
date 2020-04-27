@@ -5,11 +5,6 @@ from Pump_project.Model.DAQ.base import DAQBase
 
 class Daq(DAQBase):
 
-	# Define default settings as a dictionnary
-	# ----------------------------------------
-
-	DEFAULTS = {'interfacing_method' : InterfaceType.USB}
-
 	# Define the __init__ construction method
 	# ---------------------------------------
 
@@ -17,6 +12,7 @@ class Daq(DAQBase):
 		# print('Init of class Daq')
 		super().__init__(DAQ_id)
 		self.DAQ_id = DAQ_id
+		self.interface_type = InterfaceType.USB
 
 	# Define a method returning the id of the selected DAQ
 	# ----------------------------------------------------
@@ -28,17 +24,14 @@ class Daq(DAQBase):
 	# --------------------------------
 	
 	def initialize(self):
-		interface_type = self.DEFAULTS['interfacing_method']
 
     	# Check there is a DAQ connected to the computer
 		# ----------------------------------------------
 
-		# SHOULD BE A CONFIG PARAMETER OF THE DAQ
-
-		devices = get_daq_device_inventory(interface_type)
+		devices = get_daq_device_inventory(self.interface_type)
 		number_of_devices = len(devices)
 		if number_of_devices == 0:
-		    raise Exception('Error: No DAQ devices found')
+			raise Exception('Error: No DAQ devices found')
 
 		# Look for the device with the proper ID
 		# --------------------------------------
