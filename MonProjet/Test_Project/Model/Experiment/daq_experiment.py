@@ -1,4 +1,4 @@
-from Test_Project.Model.DAQ.daq import Daq
+from MonProjet.Test_Project.Model.DAQ.daq import Daq
 from time import sleep
 import yaml
 

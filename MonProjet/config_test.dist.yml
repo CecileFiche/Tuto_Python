@@ -1,0 +1,12 @@
+# coding: utf-8
+
+examples: Examples 
+
+slack_url: slack_url
+
+source:
+  mysql:
+    host: host short-jb
+    database: images
+    user: user
+    password: pwd

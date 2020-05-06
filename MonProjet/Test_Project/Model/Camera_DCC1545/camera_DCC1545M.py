@@ -7,7 +7,7 @@ Created on Wed May  6 15:12:48 2020
 """
 
 from pyueye import ueye
-from Test_Project.Model.Camera_DCC1545.Camera_base import CameraBase
+from MonProjet.Test_Project.Model.Camera_DCC1545.Camera_base import CameraBase
 
 class Camera_thorlabs(CameraBase):
     

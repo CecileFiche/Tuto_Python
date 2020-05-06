@@ -8,7 +8,7 @@ Created on Tue Apr 28 11:48:33 2020
 
 import os
 
-from Test_Project.Model.Experiment.daq_experiment import DAQ_Experiment
+from MonProjet.Test_Project.Model.Experiment.daq_experiment import DAQ_Experiment
 
 from PyQt5 import QtWidgets
 from PyQt5 import uic
