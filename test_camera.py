@@ -81,7 +81,7 @@ else:
     m_nColorMode = ueye.IS_CM_MONO8
     nBitsPerPixel = ueye.INT(8)
     bytes_per_pixel = int(nBitsPerPixel / 8)
-    print("else")q
+    print("else")
 
 # Can be used to set the size and position of an "area of interest"(AOI) within an image
 nRet = ueye.is_AOI(hCam, ueye.IS_AOI_IMAGE_GET_AOI, rectAOI, ueye.sizeof(rectAOI))
