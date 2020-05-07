@@ -9,6 +9,7 @@ Created on Tue Apr 28 11:48:33 2020
 import os
 
 from Test_Project.Model.Experiment.daq_experiment import DAQ_Experiment
+from Test_Project.Model.Camera_DCC1545.camera_DCC1545M import Camera_thorlabs
 
 from PyQt5 import QtWidgets
 from PyQt5 import uic
@@ -25,6 +26,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.Stop_Button.clicked.connect(self.stop_clicked)
         self.Pump_Button.clicked.connect(self.pump_clicked)
         self.CloseGUI_Button.clicked.connect(self.closeGUI)
+        self.InitCam_Button.clicked.connect(self.init_ThorlabsCam)
+        self.CloseCam_Button.clicked.connect(self.release_ThorlabsCam)
           
     def start_clicked(self):
         self.daq = DAQ_Experiment('01CF3519')
@@ -43,6 +46,16 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     def closeGUI(self):
         print("Closing software")
         self.close()
+        
+    def init_ThorlabsCam(self):
+        self.cam = Camera_thorlabs(8,1)
+        Id = self.cam.open_connection()
+        print("{} _ {}".format(Id[0],Id[1]))
+        FullId = Id[0] + " _ " + Id[1]
+        self.CamID_Edit.setText(FullId)  
+        
+    def release_ThorlabsCam(self):
+        self.cam.close_connection()
         
         
 if __name__ == '__main__':
