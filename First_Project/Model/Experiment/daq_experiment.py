@@ -1,4 +1,4 @@
-from Test_Project.Model.DAQ.daq import Daq
+from First_Project.Model.DAQ.daq import Daq
 from time import sleep
 
 class DAQ_Experiment():

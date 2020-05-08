@@ -7,15 +7,16 @@ Created on Wed May  6 15:12:48 2020
 """
 
 from pyueye import ueye
-from Test_Project.Model.Camera_DCC1545.Camera_base import CameraBase
+from First_Project.Model.Camera_DCC1545.camera_base import CameraBase
 
 class Camera_thorlabs(CameraBase):
     
     # Define the __init__ construction method
 	# ---------------------------------------
-
-	def __init__(self):
+    
+    def __init__(self):
         super().__init__()
         
-    def open_connection(self):
         
+    def open_connection(self):
+        pass

@@ -5,36 +5,42 @@ Created on Tue Apr 28 11:48:33 2020
 
 @author: fiche
 """
-
-import os
-
-from Test_Project.Model.Experiment.daq_experiment import DAQ_Experiment
-from Test_Project.Model.Camera_DCC1545.camera_DCC1545M import Camera_thorlabs
+import os.path as path
+from First_Project.Model.Experiment.daq_experiment import DAQ_Experiment
+from First_Project.Model.Camera_DCC1545.camera_DCC1545M import Camera_thorlabs
 
 from PyQt5 import QtWidgets
 from PyQt5 import uic
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
     
-    def __init__(self, parent=None):
+    def __init__(self, config_parameters, main_path, parent=None):
         super().__init__(parent)
-        p = os.path.dirname(__file__) # Variable __file__ contain the full path of the currently executed code
-        uic.loadUi(os.path.join(p, 'GUI/main_window.ui'), self) # Load the pre-defined GUI      
+        
+        # Load the config parameters
+        # --------------------------
+        self.config_parameters = config_parameters
+        
+        # Load the GUI 
+        # ------------
+        uic.loadUi(path.join(main_path, 'View/GUI/main_window.ui'), self) # Load the pre-defined GUI
+        
         
     def setupUi(self, MainWindow):
-        self.Start_Button.clicked.connect(self.start_clicked)
-        self.Stop_Button.clicked.connect(self.stop_clicked)
+        self.DAQinit_Button.clicked.connect(self.initDAQ)
+        self.DAQstop_Button.clicked.connect(self.releaseDAQ)
         self.Pump_Button.clicked.connect(self.pump_clicked)
         self.CloseGUI_Button.clicked.connect(self.closeGUI)
         self.InitCam_Button.clicked.connect(self.init_ThorlabsCam)
         self.CloseCam_Button.clicked.connect(self.release_ThorlabsCam)
           
-    def start_clicked(self):
-        self.daq = DAQ_Experiment('01CF3519')
-        self.parameter = self.daq.load_config('/home/fiche/Workspace/Python/Tuto_Python/Examples/Config/experiment.yml')
+    def initDAQ(self):
+        DAQ_sn = self.config_parameters['DAQ']['serial_number']
+        daq = DAQ_Experiment(DAQ_sn)
+        return daq
         
-    def stop_clicked(self):
-        self.daq.stop()
+    def releaseDAQ(self, daq):
+        daq.stop()
         
     def pump_clicked(self):
         ao_channel = self.parameter['DAQ']['ao_pump']

@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>190</width>
+      <width>211</width>
       <height>65</height>
      </rect>
     </property>
@@ -28,16 +28,16 @@
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="Start_Button">
+      <widget class="QPushButton" name="DAQinit_Button">
        <property name="text">
-        <string>Start</string>
+        <string>Init DAQ</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="Stop_Button">
+      <widget class="QPushButton" name="DAQstop_Button">
        <property name="text">
-        <string>Stop</string>
+        <string>Release DAQ</string>
        </property>
       </widget>
      </item>
@@ -162,7 +162,7 @@
       <rect>
        <x>280</x>
        <y>30</y>
-       <width>113</width>
+       <width>341</width>
        <height>23</height>
       </rect>
      </property>
