@@ -6,7 +6,7 @@ import sys
 #---------------------------------------------------------------------------------------------------------------------------------------
 
 #Variables
-hCam = ueye.HIDS(0)             #0: first available camera;  1-254: The camera with the specified camera ID
+qqhCam = ueye.HIDS(0)             #0: first available camera;  1-254: The camera with the specified camera ID
 sInfo = ueye.SENSORINFO()
 cInfo = ueye.CAMINFO()
 pcImageMemory = ueye.c_mem_p()
