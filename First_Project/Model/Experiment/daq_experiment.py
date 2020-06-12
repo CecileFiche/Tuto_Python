@@ -1,7 +1,7 @@
 from First_Project.Model.DAQ.daq import Daq
 from time import sleep
 
-class DAQ_Experiment():
+class DAQExperiment():
 
 	# Define the __init__ method
 	# --------------------------

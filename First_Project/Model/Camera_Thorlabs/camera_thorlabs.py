@@ -11,7 +11,7 @@ import cv2
 import time
 # from First_Project.Model.Camera_Thorlabs.camera_base import CameraBase
 
-class Camera_thorlabs():
+class CameraThorlabs():
     
     # Define the __init__ construction method
 	# ---------------------------------------
@@ -119,7 +119,7 @@ class Camera_thorlabs():
         
 if __name__ == "__main__":
     
-    cam = Camera_thorlabs(0)
+    cam = CameraThorlabs(0)
     cam.open_connection()
     cam.close_connection()
     

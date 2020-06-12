@@ -1,6 +1,4 @@
-from uldaq import (get_daq_device_inventory, DaqDevice, InterfaceType,
-	AOutFlag,
-	DigitalDirection,DigitalPortIoType)
+from uldaq import (get_daq_device_inventory, DaqDevice, InterfaceType, AOutFlag, DigitalDirection,DigitalPortIoType)
 from First_Project.Model.DAQ.base import DAQBase
 
 class Daq(DAQBase):
