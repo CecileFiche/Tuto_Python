@@ -16,6 +16,7 @@ class Ui_MainWindow(qtw.QMainWindow):
     
     init_cam = qtc.pyqtSignal(int)
     close_cam = qtc.pyqtSignal()
+    start_cam = qtc.pyqtSignal()
     
     def __init__(self, main_path):
         super().__init__()
@@ -36,6 +37,7 @@ class Ui_MainWindow(qtw.QMainWindow):
         self.CloseGUI_Button.clicked.connect(self.closeGUI)
         self.InitCam_Button.clicked.connect(self.init_ThorlabsCam)
         self.CloseCam_Button.clicked.connect(self.release_ThorlabsCam)
+        self.StartCam_Button.clicked.connect(self.start_acquisition_ThorlabsCam)
           
     # def initDAQ(self):
     #     DAQ_sn = self.config_parameters['DAQ']['serial_number']
@@ -52,22 +54,29 @@ class Ui_MainWindow(qtw.QMainWindow):
     #     print("The volume to inject is {}µl at {}µl/min".format(volume, flow_rate))
     #     self.daq.pump_injection(float(flow_rate),float(volume),ao_channel)
         
+    @qtc.pyqtSlot()
     def init_ThorlabsCam(self):
-        print('Initializing ...')
-        h = self.Camhandle_Edit.text()
-        # Need to check it is between 0 and 254 + not empty
-        self.init_cam.emit(int(h))
-        # self.cam = CameraThorlabs(0)
-        # self.cam.open_connection()
-        # Id = self.cam.open_connection()
-        # print("{} _ {}".format(Id[0],Id[1]))
-        # FullId = Id[0] + " _ " + Id[1]
-        # self.CamID_Edit.setText(FullId)  
         
+        print('Initializing ...')
+        h = self.Camhandle_Edit.text() # Read the handle value from the GUI
+        h = int(h)
+        if h>=0 and h<255 :
+            self.init_cam.emit(h)
+        else :
+            print('The handle value needs to be between 0 and 254. Initialization is aborted.')
+            
+            
+    @qtc.pyqtSlot()
+    def start_acquisition_ThorlabsCam(self):
+        self.start_cam.emit()
+        
+        
+    @qtc.pyqtSlot()
     def release_ThorlabsCam(self):
         self.close_cam.emit()
-        # self.cam.close_connection()
-                
+        
+    
+    @qtc.pyqtSlot()
     def closeGUI(self):
         print("Closing software")
         self.close()

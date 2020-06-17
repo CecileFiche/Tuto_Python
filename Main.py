@@ -28,11 +28,14 @@ class Main():
 
         self.thor_cam = CameraThorlabs(0) # Instantiation of the class
         
-        # Definition of the signal/slot connections
-        # ------------------------------------------
+        # Definition of the signal/slot connections for the Thorlabs camera
+        # -----------------------------------------------------------------
 
         self.m.init_cam.connect(self.thor_cam.open_connection)
         self.m.close_cam.connect(self.thor_cam.close_connection)
+        self.thor_cam.cam_initialized.connect(self.m.CamID_Edit.setText)
+        self.m.start_cam.connect(self.thor_cam.init_acquisition)
+        self.thor_cam.cam_acquiring.connect(self.m.Cam_image.setPixmap)
         # self.model.error.connect(self.view.show_error)
 
 

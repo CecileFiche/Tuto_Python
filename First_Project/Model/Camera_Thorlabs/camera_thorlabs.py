@@ -7,11 +7,16 @@ Created on Wed May  6 15:12:48 2020
 """
 
 from pyueye import ueye
+from PyQt5 import QtCore as qtc
+from PyQt5 import QtGui as qtg
 import cv2
-import time
-# from First_Project.Model.Camera_Thorlabs.camera_base import CameraBase
+import numpy as np
+# import time
 
-class CameraThorlabs():
+class CameraThorlabs(qtc.QObject, qtg.QPixmap):
+    
+    cam_initialized = qtc.pyqtSignal(str)
+    cam_acquiring = qtc.pyqtSignal(qtg.QPixmap)
     
     # Define the __init__ construction method
 	# ---------------------------------------
@@ -27,19 +32,32 @@ class CameraThorlabs():
         self.sensor_info = ueye.SENSORINFO()
         self.cam_info = ueye.CAMINFO()
         self.rectAOI = ueye.IS_RECT()
-        self.init = False # Indicate that the initialization procedure was not launched yet
+        self.pcImageMemory = ueye.c_mem_p()
+        self.MemID = ueye.int()
+        self.pitch = ueye.INT()
         
-    def open_connection(self):
+    @qtc.pyqtSlot(int)    
+    def open_connection(self, camID):
+        
+        """
+        Function taking care of the Thorlabs camera initialization. 
+
+        Parameters
+        ----------
+        camID : int - indicate the handle of the camera we want to intialize. 
+
+        """
         
         # Starts the driver and establishes the connection to the camera
         # --------------------------------------------------------------
         
+        self.hcam = ueye.HIDS(camID)
+        
         Init = ueye.is_InitCamera(self.hcam, None)
         if Init != ueye.IS_SUCCESS:
             print("is_InitCamera ERROR - make sure the camera is properly connected")
+            self.cam_initialized.emit('')
             return
-        else:
-            print('success')
             
         # Reads out the data hard-coded in the non-volatile camera memory and 
         # writes it to the data structure that cInfo points to
@@ -48,6 +66,7 @@ class CameraThorlabs():
         read_cam_info = ueye.is_GetCameraInfo(self.hcam, self.cam_info)
         if read_cam_info != ueye.IS_SUCCESS:
             print("is_GetCameraInfo ERROR")
+            self.cam_initialized.emit('')
             return
 
         # You can query additional information about the sensor type used in 
@@ -57,6 +76,7 @@ class CameraThorlabs():
         read_sensor_info = ueye.is_GetSensorInfo(self.hcam, self.sensor_info)
         if read_sensor_info != ueye.IS_SUCCESS:
             print("is_GetSensorInfo ERROR")
+            self.cam_initialized.emit('')
             return
 
         # Reset buffer and all the display parameters to the default values
@@ -65,6 +85,7 @@ class CameraThorlabs():
         reset = ueye.is_ResetToDefault(self.hcam)
         if reset != ueye.IS_SUCCESS:
             print("is_ResetToDefault ERROR")
+            self.cam_initialized.emit('')
             return
 
         # Set display mode to DIB - the image is directly saved on the RAM
@@ -91,11 +112,12 @@ class CameraThorlabs():
         
         else:
             print('Error : the camera type is unknown.')
+            self.cam_initialized.emit('')
             return
         
         # Define a dictionary with the main properties of the camera selected
         # -------------------------------------------------------------------
-        
+    
         ueye.is_AOI(self.hcam, ueye.IS_AOI_IMAGE_GET_AOI, self.rectAOI, ueye.sizeof(self.rectAOI))
         
         self.Properties = {'Camera sensor model (from IDS)': self.sensor_info.strSensorName.decode('utf-8'),
@@ -108,11 +130,100 @@ class CameraThorlabs():
         # Indicate that the initialization procedure was completed
         # --------------------------------------------------------
         
-        print('Thorlabs camera was found and initialized')
-        self.init = True
+        print('Success : Thorlabs camera was found and initialized')
+        self.cam_initialized.emit(self.Properties['Camera s/n'])
+       
         
+    @qtc.pyqtSlot()
+    def init_acquisition(self):
+        
+        """
+        Allocate the computer memory according to the size of the image and 
+        start the acquisition.
+
+        """
+        
+        # Allocate memory for the acquisition
+        # -----------------------------------
+        
+        self.width = self.rectAOI.s32Width
+        self.height = self.rectAOI.s32Height
+        Allocate_memory = ueye.is_AllocImageMem(self.hcam, self.width, self.height,
+                                                self.nBitsPerPixel, self.pcImageMemory, self.MemID)
+        
+        if Allocate_memory != ueye.IS_SUCCESS:
+            print("is_AllocImageMem ERROR")
+            return
+        else:
+            # Makes the specified image memory the active memory
+            Allocate_memory = ueye.is_SetImageMem(self.hcam, self.pcImageMemory, self.MemID)
+            if Allocate_memory != ueye.IS_SUCCESS:
+                print("is_SetImageMem ERROR")
+                return
+            else:
+                # Set the desired color mode
+                Color_mode = ueye.is_SetColorMode(self.hcam, self.m_nColorMode)
+                
+        # Activates the camera's live video mode (free run mode)
+        # ------------------------------------------------------
+        
+        Launch_capture = ueye.is_CaptureVideo(self.hcam, ueye.IS_DONT_WAIT)
+        if Launch_capture != ueye.IS_SUCCESS:
+            print("is_CaptureVideo ERROR")
+            return
+
+        # Enables the queue mode for existing image memory sequences
+        nRet = ueye.is_InquireImageMem(self.hcam, self.pcImageMemory, self.MemID, 
+                                       self.width, self.height, self.nBitsPerPixel, self.pitch)
+        if nRet != ueye.IS_SUCCESS:
+            print("is_InquireImageMem ERROR")
+            return
+        
+        # Launch the live acquisition
+        # ---------------------------
+        
+        self.acquire()
+        
+    
+    def acquire(self):
+        
+        
+        # while(nRet == ueye.IS_SUCCESS):
+
+        # In order to display the image in an OpenCV window we need to extract the 
+        # data of our image memory, reshape it as a numpy array and define it as a 
+        # cv2 object.
+        # -----------
+    
+        array = ueye.get_data(self.pcImageMemory, self.width, self.height, self.nBitsPerPixel, 
+                              self.pitch, copy=False)
+    
+        # bytes_per_pixel = int(nBitsPerPixel / 8)
+    
+        frame = np.reshape(array,(self.height.value, self.width.value, self.bytes_per_pixel))
+        frame = cv2.resize(frame,(0,0),fx=0.5, fy=0.5)
+    
+        # # ...resize the image by a half
+        # frame = cv2.resize(frame,(0,0),fx=0.5, fy=0.5)
+        
+        #---------------------------------------------------------------------------------------------------------------------------------------
+        #Include image data processing here
+        #---------------------------------------------------------------------------------------------------------------------------------------
+    
+        frame = qtg.QImage(frame, frame.shape[1], frame.shape[0], qtg.QImage.Format_RGB888)
+        frame = qtg.QPixmap.fromImage(frame)
+        self.cam_acquiring.emit(frame)
+        print(frame)
+        
+    @qtc.pyqtSlot()     
     def close_connection(self):
         
+        """
+        Close the connection with the Thorlabs camera and release the handle 
+        as well as the memory usage
+
+        """
+        ueye.is_FreeImageMem(self.hcam, self.pcImageMemory, self.MemID)
         ueye.is_ExitCamera(self.hcam)
         print('Connection to the camera was closed')
         
